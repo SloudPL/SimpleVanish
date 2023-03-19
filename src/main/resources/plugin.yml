@@ -2,3 +2,10 @@ name: SimpleVanish
 version: '${version}'
 main: pl.sloudpl.simplevanish.SimpleVanish
 api-version: 1.19
+author: SloudPL
+website: https://sloud.pl
+commands:
+  vanish:
+    description: Vanish
+  v:
+    description: Vanish
