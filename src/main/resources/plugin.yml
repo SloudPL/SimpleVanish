@@ -1,0 +1,4 @@
+name: SimpleVanish
+version: '${version}'
+main: pl.sloudpl.simplevanish.SimpleVanish
+api-version: 1.19
