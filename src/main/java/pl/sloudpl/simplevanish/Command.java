@@ -20,43 +20,47 @@ public class Command implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
 
-        if(sender instanceof Player){
+        if (command.getName().equalsIgnoreCase("v") || command.getName().equalsIgnoreCase("vanish")){
 
-            Player p = (Player) sender;
-            if(p.hasPermission("sloudpl.vanish") || p.isOp()){
+            if (sender instanceof Player) {
 
-                if(plugin.invisible.contains(p)){
+                Player p = (Player) sender;
 
-                    for(Player players : Bukkit.getOnlinePlayers()){
+                if (p.hasPermission("sloudpl.vanish") || p.isOp()) {
 
-                        players.showPlayer(p);
+                    if (plugin.invisible.contains(p)) {
+
+                        for (Player players : Bukkit.getOnlinePlayers()) {
+
+                            players.showPlayer(p);
+
+                        }
+                        plugin.invisible.remove(p);
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.show")));
+
+                    } else if (!plugin.invisible.contains(p)) {
+
+                        for (Player players : Bukkit.getOnlinePlayers()) {
+
+                            players.hidePlayer(p);
+
+                        }
+                        plugin.invisible.add(p);
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.hide")));
 
                     }
-                    plugin.invisible.remove(p);
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.show")));
 
-                } else if(!plugin.invisible.contains(p)) {
+                } else {
 
-                    for(Player players : Bukkit.getOnlinePlayers()){
-
-                        players.hidePlayer(p);
-
-                    }
-                    plugin.invisible.add(p);
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.hide")));
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.nopermission")));
 
                 }
 
             } else {
 
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.nopermission")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.console")));
 
             }
-
-        } else {
-
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.console")));
-
         }
 
         return false;
