@@ -1,5 +1,5 @@
 vanish:
-  show: '&aYou are now visible'
-  hide: '&cYou are invisible'
+  show: '&cYou are now visible'
+  hide: '&aYou are invisible'
   nopermission: '&4You don`t have permission to use this command'
   console: '&4You need to be a player to use this command'

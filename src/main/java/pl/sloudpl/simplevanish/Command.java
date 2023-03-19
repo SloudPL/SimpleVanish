@@ -14,53 +14,51 @@ public class Command implements CommandExecutor {
 
         plugin = m;
         m.getCommand("vanish").setExecutor(this);
+        m.getCommand("v").setExecutor(this);
 
     }
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
 
-        if (command.getName().equalsIgnoreCase("v") || command.getName().equalsIgnoreCase("vanish")){
+        if (sender instanceof Player) {
 
-            if (sender instanceof Player) {
+            Player p = (Player) sender;
 
-                Player p = (Player) sender;
+            if (p.hasPermission("sloudpl.vanish") || p.isOp()) {
 
-                if (p.hasPermission("sloudpl.vanish") || p.isOp()) {
+                if (plugin.invisible.contains(p)) {
 
-                    if (plugin.invisible.contains(p)) {
+                    for (Player players : Bukkit.getOnlinePlayers()) {
 
-                        for (Player players : Bukkit.getOnlinePlayers()) {
-
-                            players.showPlayer(p);
-
-                        }
-                        plugin.invisible.remove(p);
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.show")));
-
-                    } else if (!plugin.invisible.contains(p)) {
-
-                        for (Player players : Bukkit.getOnlinePlayers()) {
-
-                            players.hidePlayer(p);
-
-                        }
-                        plugin.invisible.add(p);
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.hide")));
+                        players.showPlayer(p);
 
                     }
+                    plugin.invisible.remove(p);
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.show")));
 
-                } else {
+                } else if (!plugin.invisible.contains(p)) {
 
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.nopermission")));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+
+                        players.hidePlayer(p);
+
+                    }
+                    plugin.invisible.add(p);
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.hide")));
 
                 }
 
             } else {
 
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.console")));
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.nopermission")));
 
             }
+
+        } else {
+
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("vanish.console")));
+
         }
 
         return false;
